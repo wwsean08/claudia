@@ -55,19 +55,10 @@ ENV PATH ${GOPATH}/bin:/usr/local/go/bin:${PATH}
 RUN mkdir -p ${GOPATH}/bin && \
     mkdir -p ${GOPATH}/pkg && \
     mkdir -p ${GOPATH}/src && \
-    wget https://glide.sh/get && \
-    chmod ugo+x ./get && \
-    ./get && \
-    rm -f get && \
-    rm -rf /tmp/glide*
+    curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
 
 # Install Go dependencies and some tooling
-COPY glide.yaml ${GOPATH}
-COPY glide.lock ${GOPATH}
 RUN cd ${GOPATH} && \
-    glide install && \
-    mv vendor/* src/ && \
-    rmdir vendor && \
     go get -u -v github.com/derekparker/delve/cmd/dlv && \
     go get -u -v gopkg.in/alecthomas/gometalinter.v1 && \
     cd ${GOPATH}/bin && \

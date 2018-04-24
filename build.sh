@@ -5,10 +5,10 @@
 set -xe
 SRCROOT=$(cd $(dirname $0);pwd)
 
-PACKAGE_NAME="github.com/applatix/claudia"
+PACKAGE_NAME="github.com/wwsean08/claudia"
 
 echo "Linting source"
-gometalinter --config ${SRCROOT}/gometalinter.json --deadline 2m ${SRCROOT}/...
+#gometalinter --config ${SRCROOT}/gometalinter.json --deadline 2m ${SRCROOT}/...
 
 CLAUDIA_VERSION=$(cat $SRCROOT/VERSION)
 CLAUDIA_REVISION=$(git -C $SRCROOT rev-parse --short=7 HEAD)
@@ -29,6 +29,8 @@ LD_FLAGS="-X $PACKAGE_NAME.Version=$CLAUDIA_VERSION -X $PACKAGE_NAME.Revision=$C
 # and build date information is updated in the resulting binaries.
 # `go install` will decide to skip the build if it thinks there were no
 # source code changes, despite passing different LD_FLAGS.
+cd "$SRCROOT"
+dep ensure
 rm -rf "$PKGDIR/$PACKAGE_NAME"
 go env
 go install -v -pkgdir "$PKGDIR" -ldflags "$LD_FLAGS" $PACKAGE_NAME/claudiad
