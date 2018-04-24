@@ -8,3 +8,4 @@ ami/docker-compose.yml
 .idea/
 site/
 dist/
+/vendor/
